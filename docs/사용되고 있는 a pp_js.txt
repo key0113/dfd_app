@@ -1,0 +1,238 @@
+// 필수 선언 구문 (START)
+var deviceType = (function(){
+    var device= "";
+    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    if( userAgent.match( /iPad/i ) || userAgent.match( /iPhone/i ) || userAgent.match( /iPod/i ) ){
+        device= 'ios';
+    }else if( userAgent.match( /Android/i ) ){
+        device= 'android';
+    }else{
+        device= 'unknown'; 
+    }   
+    return device;
+})();
+
+isAndroid = (function(){
+  return deviceType=="android" && typeof Android != "undefined";
+})();
+
+isIOS = (function(){
+  return deviceType=="ios" && typeof IOS != "undefined";
+})();
+
+var postAppMessage = function(bridgeName, message) {
+    let data = {
+        'bridgeName': bridgeName,
+        'message' : message
+    };
+    // alert(JSON.stringify(data));
+    // window.ReactNativeWebView.postMessage(JSON.stringify(data));
+
+    if (typeof window.flutter_inappwebview != 'undefined') {
+       return window.flutter_inappwebview.callHandler(bridgeName, JSON.stringify(message));
+    }
+
+    // if (isAndroid){
+    //     Android[bridgeName](JSON.stringify(message));
+    // } else if (isIOS) {
+    //     IOS[bridgeName].postAppMessage(message);
+    // } else {
+    //     console.log(bridgeName, message);
+    // }
+}
+// 필수 선언 구문 (END)
+
+// 따로 구현할 것
+var simpleAlert = (...options) => {
+    alert(options.join(" + "));
+}
+
+var appAuto = (...options) => {
+    $.ajax({
+        type : 'get',
+        url : '/app/appAuto_YN',
+        data : {'account':''},
+        dataType : 'json',
+        error: function(xhr, status, error){
+            //alert.open(JSON.stringify(xhr));
+        },
+        success : function(result){
+            //alert.open(result);
+        }
+    });
+}
+
+// 따로 구현할 것
+var appCallback = {
+    "getJson" : simpleAlert, 
+    "getPushToken":simpleAlert,
+    "getLocation":simpleAlert,
+    "getVersion":simpleAlert,
+    "getUserLevels": simpleAlert,
+    "getUUID":simpleAlert
+}
+
+// 앱에서 사용자 등급을 요청시 등급을 전달
+var requestUserLevel = function() {
+    appRequest.setUserLevels("A"); // <-- 등급을 담아서 전달하도록 할 것
+}
+
+var appRequest = {
+    "closeWindow" : () => {
+        postAppMessage("closeWindow");
+    },
+
+    // json 데이타 저장
+    // @param key : 저장키
+    // @param data : 저장할 데이터
+    "setJson" : () => {
+        let message = {
+            "key" : "loginInfo",
+            "data" : JSON.stringify(
+                {
+                "id" : "aaaa",
+                "password" : "bbbb",
+                "autoLoginYn" : "Y"
+                }
+            )
+        }
+        postAppMessage("setJson", message);
+    },
+    // 저장한 json 데이타 불러오기
+    // @param key : 저장키
+    // @param callback : 응답받을 콜백함수 명
+    // appCallback.getJson('{"id" : "aaaa","password" : "bbbb","autoLoginYn" : "Y"}')
+    "getJson": () => {
+        let message = {
+            "key" : "loginInfo",
+            "callback" : "appCallback.getJson"
+        }
+        let data = postAppMessage("getJson",message);
+        console.log(data);
+    },
+    // 로그인시 APP 에 등급 전달 (등급에 따른 fcm topic 탈퇴 또는 가입)
+    // @param level : 등급
+    "setUserLevels" : (level) => {
+        // let message = {
+        //     "level" : level
+        // }
+        // postAppMessage("setUserLevels", message);
+        postAppMessage("setUserLevels", level);
+    },
+    // 푸시 수신 여부, 앱으로 전달 (fcm topic 탈퇴 또는 가입)
+    // @param onOff : 수신 - "Y", 수신거부 - "N"
+    "setPushOnOff" : (on) => {
+        let message = {
+            "onOff" : on
+        }
+        postAppMessage("setPushOnOff", message);
+    },
+    // 디바이스 고유 UUID 불러오기
+    // @param callback : 응답받을 콜백함수 명
+    // appCallback.getUUID('12093-123124-123d12d-123214')
+    "getUUID": () => {
+        let message = {
+            "callback" : "appCallback.getUUID"
+        }
+        postAppMessage("getUUID",message);
+    },
+    // firebase token 불러오기
+    // @param callback : 응답받을 콜백함수 명
+    // appCallback.getPushToken('wef1f12-1d11g1g-12e12-f1f1g1')
+    "getPushToken": () => {
+        // let message = {
+        //     "callback" : "appCallback.getPushToken"
+        // }
+        // postAppMessage("getPushToken",message);
+        postAppMessage("getPushToken").then((result) => {
+
+        alert(result);
+
+        });
+    },
+    // 위치 불러오기
+    // @param callback : 응답받을 콜백함수 명
+    // appCallback.getLocation('{"lat":123.00012, "long":37.00123}')
+    "getLocation": () => {
+        let message = {
+            "callback" : "appCallback.getLocation"
+        }
+        postAppMessage("getLocation",message);
+    },
+    // 앱 버전 불러오기
+    // @param callback : 응답받을 콜백함수 명
+    // appCallback.getVersion('1.0.1')
+    "getVersion": () => {
+        let message = {
+            "callback" : "appCallback.getVersion"
+        }
+        postAppMessage("getVersion",message);
+    },
+
+    "getUserLevels": () => {
+        // let message = {
+        //     "callback" : "appCallback.getUserLevels"
+        // }
+        // postAppMessage("getUserLevels",message);
+        // postAppMessage("getUserLevels");
+        postAppMessage("getUserLevels").then((result) => {
+
+        alert(result);
+
+        });
+    },
+
+    "appStop": () => {
+        postAppMessage("appStop");
+    },
+    // 20221121
+    // 인앱 새창으로 열기 (GET)
+    "openUrl" : (url) => {
+
+        let url_str = url.split('||');
+
+        let message = {
+            "url" : url_str[0],
+        }
+
+        var user_account_chk = url_str[1];
+
+        if(user_account_chk != ''){
+            $.ajax({
+                type : 'post',
+                url : '/login/app_chat_login_chk',
+                data : {'username':user_account_chk},
+                dataType : 'json',
+                error: function(xhr, status, error){
+                    alert(error);
+                },
+                success : function(result){
+                    //alert(result);
+                }
+            });
+        }
+
+        postAppMessage("openUrl",message);
+    },
+    // 파일 다운로드
+    // @param url : 다운로드할 파일 주소
+    "fileDownload" : () => {
+        let message = {
+            "url" : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuXzNkGKWYHODIrDUdAyybUEOkI7jG-vZvrY0tjjZyZAWz8hCu7A&s"
+          }
+        postAppMessage("fileDownload",message);
+    },
+    // 웹 페이지 공유하기
+    // @param url : 공유할 페이지 주소
+    "shareURL" : () => {
+        postAppMessage("shareURL");
+    }
+
+}
+
+window.addEventListener("flutterInAppWebViewPlatformReady", async function(event){
+        // 앱에서 호출 되는 리스너
+});
+// window.addEventListener('message', (message) => {
+//   alert(message.data);
+// });

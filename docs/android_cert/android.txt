@@ -1,0 +1,20 @@
+
+앱 서명 키 
+EC:60:16:76:09:A2:42:0D:B4:A0:26:54:68:C0:7D:B4
+B9:8C:86:CF:DD:54:74:83:83:26:34:38:07:35:0A:56:AF:3B:FE:A5
+23:F6:FF:2A:A5:4F:A3:E5:A8:85:EA:A1:A6:B9:C9:F7:CA:0F:F1:17:2B:93:E0:E7:97:7A:64:4F:4A:CD:BA:B0
+
+
+업로드 키 
+EF:3B:95:08:1D:CE:E8:4C:FF:4F:F9:1B:A2:1F:10:BF
+88:CE:9B:49:59:1C:41:60:D2:67:54:AC:53:18:6C:16:06:A0:46:86
+0A:DA:FA:A3:F2:78:EA:FC:F0:99:6D:17:FA:63:C2:ED:F3:54:EB:F4:A0:51:F6:FA:37:B5:06:9C:B4:F5:65:62
+
+
+
+/Users/kyu/jobs/showgle/docs/android_cert/showgle-upload-keystore.jks
+
+
+$ keytool -export -rfc -keystore showgle-upload-keystore.jks -alias upload -file showgle_upload_certificate.pem
+
+pw - showgle

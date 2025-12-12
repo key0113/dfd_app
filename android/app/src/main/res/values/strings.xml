@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DFD</string>
+    <string name="DFD">DFD</string>
+    <string name="default_notification_channel_id" translatable="false">DFD_notification_channel</string>
+
+    <!-- 네이버 로그인 -->
+    <string name="naver_client_id">s4qYct0SztyYBJSbRcan</string>
+    <string name="naver_client_secret">_chxAjR0us</string>
+    <string name="naver_client_name">dfd_test</string>
+
+</resources>
