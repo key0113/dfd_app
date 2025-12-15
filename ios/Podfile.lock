@@ -85,7 +85,7 @@ PODS:
     - Flutter
   - flutter_naver_login (0.0.1):
     - Flutter
-    - naveridlogin-sdk-ios (~> 4.1.0)
+    - naveridlogin-sdk-ios (~> 4.1.5)
   - GoogleAppMeasurement (10.12.0):
     - GoogleAppMeasurement/AdIdSupport (= 10.12.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.11)
@@ -251,7 +251,7 @@ SPEC CHECKSUMS:
   flutter_app_badger: b87fc231847b03b92ce1412aa351842e7e97932f
   flutter_inappwebview: 3d32228f1304635e7c028b0d4252937730bbc6cf
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
-  flutter_naver_login: 1dbf6d21aae5235cdf76a28ac79cf6871899282f
+  flutter_naver_login: 95ed5bdb4c535f3e46a70ecdb9d2283294e216b1
   GoogleAppMeasurement: 2d800fab85e7848b1e66a6f8ce5bca06c5aad892
   GoogleDataTransport: 6c09b596d841063d76d4288cc2d2f42cc36e1e2a
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15

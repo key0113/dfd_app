@@ -30,7 +30,14 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>kakao91c634c2201ae4899f63df65c7c1c0ba</string>
-				<string>naverlogin</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.dfdtest.membership</string>
 			</array>
 		</dict>
 	</array>
@@ -63,6 +70,8 @@
 	</dict>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>사용자 데이터를 허용하시면, 맞춤화된 광고를 제공하는데 사용됩니다. 이외의 목적으로는 사용되지 않습니다.</string>
+	<key>NaverThirdPartyLogin_URLScheme</key>
+	<string>com.dfdtest.membership</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -84,5 +93,11 @@
 	<true/>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>isInAppOauthEnable</key>
+	<true/>
+	<key>isNaverAppOauthEnable</key>
+	<false/>
+	<key>naverServiceAppUrlScheme</key>
+	<string>com.dfdtest.membership</string>
 </dict>
 </plist>

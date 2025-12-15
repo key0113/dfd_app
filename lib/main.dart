@@ -20,7 +20,7 @@ import 'package:newdfd/utils/app_plugins.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:http/http.dart' as http;
 import 'package:newdfd/service/app_env.dart';
-import 'package:newdfd/service/topic_manage.dart';  // 🟢 추가
+import 'package:newdfd/service/topic_manage.dart';
 
 checkDeeplink() async {
   // ! 다이나믹 링크
