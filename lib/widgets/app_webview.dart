@@ -45,6 +45,13 @@ class _AppWebViewState extends State<AppWebView> {
     'mappd.dfdgroup.com',
   ];
 
+  final List<String> specialDomains = [
+    'kauth.kakao.com',
+    'nid.naver.com',
+    'naver.com',
+    'accounts.kakao.com',
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -219,19 +226,28 @@ class _AppWebViewState extends State<AppWebView> {
           }
 
           if (scheme == 'http' || scheme == 'https') {
-            // 🟢 내부 도메인 체크
+
             bool isInternal = internalDomains.any((domain) => 
               host == domain || host.endsWith('.$domain')
             );
-            
-            if (isInternal) {
+
+            bool isSpecial = specialDomains.any((domain) => 
+              host == domain || host.endsWith('.$domain')
+            );
+
+            if (isInternal || isSpecial) {
               // 내부 도메인 → WebView에서 열기
-              log('내부 도메인: $host - WebView에서 열기', name: 'NavigationActionPolicy.ALLOW');
+              print('✅ ${isInternal ? "내부" : "특수"} 도메인: $host - WebView에서 열기');
               return NavigationActionPolicy.ALLOW;
             } else {
               // 외부 도메인 → 브라우저로 열기
-              log('외부 도메인: $host - 브라우저로 열기', name: 'NavigationActionPolicy.CANCEL');
-              await launchUrl(url, mode: LaunchMode.externalApplication);
+              print('🌐 외부 도메인: $host - 브라우저로 열기');
+              try {
+                await launchUrl(url, mode: LaunchMode.externalApplication);
+                print('✅ launchUrl 성공');
+              } catch (e) {
+                print('❌ launchUrl 에러: $e');
+              }
               return NavigationActionPolicy.CANCEL;
             }
           }
