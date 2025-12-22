@@ -39,6 +39,12 @@ class AppWebView extends StatefulWidget {
 class _AppWebViewState extends State<AppWebView> {
   late InAppWebView _webView;
 
+  // 내부 도메인 
+  final List<String> internalDomains = [
+    'mappdev.dfdgroup.com',
+    'mappd.dfdgroup.com',
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -171,12 +177,38 @@ class _AppWebViewState extends State<AppWebView> {
           widget.onLoadStop!(url);
         }
       },
+      // shouldOverrideUrlLoading: (controller, action) async {
+      //   final url = action.request.url;
+      //   if (url != null) {
+      //     final scheme = url.scheme;
+      //     final path = url.path;
+      //     final host = url.host;
+      //     if (scheme == 'about') {
+      //       log('scheme - $scheme', name: 'NavigationActionPolicy.ALLOW');
+      //       return NavigationActionPolicy.CANCEL;
+      //     }
+
+      //     if (path == 'blank') {
+      //       return NavigationActionPolicy.CANCEL;
+      //     }
+
+      //     if (scheme == 'http' || scheme == 'https') {
+      //       log('scheme - $scheme', name: 'NavigationActionPolicy.ALLOW');
+      //       return NavigationActionPolicy.ALLOW;
+      //     }
+
+      //     _handleCustomScheme(url);
+      //     return NavigationActionPolicy.CANCEL;
+      //   }
+      //   return NavigationActionPolicy.CANCEL;
+      // },
       shouldOverrideUrlLoading: (controller, action) async {
         final url = action.request.url;
         if (url != null) {
           final scheme = url.scheme;
           final path = url.path;
           final host = url.host;
+          
           if (scheme == 'about') {
             log('scheme - $scheme', name: 'NavigationActionPolicy.ALLOW');
             return NavigationActionPolicy.CANCEL;
@@ -187,8 +219,21 @@ class _AppWebViewState extends State<AppWebView> {
           }
 
           if (scheme == 'http' || scheme == 'https') {
-            log('scheme - $scheme', name: 'NavigationActionPolicy.ALLOW');
-            return NavigationActionPolicy.ALLOW;
+            // 🟢 내부 도메인 체크
+            bool isInternal = internalDomains.any((domain) => 
+              host == domain || host.endsWith('.$domain')
+            );
+            
+            if (isInternal) {
+              // 내부 도메인 → WebView에서 열기
+              log('내부 도메인: $host - WebView에서 열기', name: 'NavigationActionPolicy.ALLOW');
+              return NavigationActionPolicy.ALLOW;
+            } else {
+              // 외부 도메인 → 브라우저로 열기
+              log('외부 도메인: $host - 브라우저로 열기', name: 'NavigationActionPolicy.CANCEL');
+              await launchUrl(url, mode: LaunchMode.externalApplication);
+              return NavigationActionPolicy.CANCEL;
+            }
           }
 
           _handleCustomScheme(url);
