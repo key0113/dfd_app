@@ -58,11 +58,6 @@ class DeepLinkService extends ChangeNotifier {
 
       final Uri? uri = Uri.parse(link);
       if (uri != null) {
-        // if (uri.scheme == 'showgle') {
-        //   log('showgle link - $link', name: 'fcm handleNotification');
-        //   setDeepLinkValue(link);
-        //   return;
-        // }
 
         setDeepLinkValue(link);
         return;

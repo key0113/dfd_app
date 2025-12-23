@@ -14,7 +14,7 @@ import java.io.File
 
 class MainActivity: FlutterActivity() {
 
-    private val APP_CHANNEL = "com.flutter.showgle/plugins"
+    private val APP_CHANNEL = "com.newdfd.membership/plugins"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

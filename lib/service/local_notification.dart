@@ -34,8 +34,8 @@ class LocalNotificationService {
 
   setting() async {
     channel = const AndroidNotificationChannel(
-      'showgle_notification_channel',
-      'Showgle Notification',
+      'dfd_notification_channel',
+      'dfd Notification',
       importance: Importance.max,
       playSound: true,
       enableLights: true,

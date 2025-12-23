@@ -5,21 +5,14 @@ class NaverAuthService {
   static final NaverAuthService shared = NaverAuthService._internal();
   NaverAuthService._internal();
 
-  // 네이버 로그인 (앱만)
   Future<Map<String, dynamic>?> signInWithNaver() async {
     try {
-      print('🟢🟢🟢 네이버 로그인 함수 시작');
-      logInfo('네이버 로그인 시작', name: 'NAVER_LOGIN');
-
-      // 1. 로그인 수행
       final NaverLoginResult result = await FlutterNaverLogin.logIn();
 
       print('🟢 네이버 로그인 결과 Status: ${result.status}');
 
       if (result.status == NaverLoginStatus.loggedIn) {
 
-        // ★ [핵심 수정] result 변수 대신, 현재 토큰을 강제로 다시 조회합니다.
-        // 일부 상황에서 로그인 결과 객체(result) 안의 토큰이 비어있는 문제를 방지합니다.
         NaverAccessToken resToken = await FlutterNaverLogin.currentAccessToken;
         String token = resToken.accessToken;
 

@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/services.dart';
 
-const appChannel = MethodChannel('com.flutter.showgle/plugins');
+const appChannel = MethodChannel('com.newdfd.membership/plugins');
 
 class AppPlugin {
   static final AppPlugin shared = AppPlugin._privateConstructor();
@@ -12,7 +12,6 @@ class AppPlugin {
 
   Future<void> systemLog(String message) async {
     if (Platform.isIOS) {
-      // appChannel.invokeMethod("systemLog", message);
     }
   }
 
