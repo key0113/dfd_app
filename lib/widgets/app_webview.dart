@@ -124,7 +124,7 @@ class _AppWebViewState extends State<AppWebView> {
       windowId: windowId,
       initialOptions: InAppWebViewGroupOptions(
           crossPlatform: InAppWebViewOptions(
-            applicationNameForUserAgent: 'showgleApp',
+            applicationNameForUserAgent: 'DFDApp',
             transparentBackground: true, //! true - black, false - white
             useShouldOverrideUrlLoading: true,
             verticalScrollBarEnabled: false,
@@ -184,31 +184,6 @@ class _AppWebViewState extends State<AppWebView> {
           widget.onLoadStop!(url);
         }
       },
-      // shouldOverrideUrlLoading: (controller, action) async {
-      //   final url = action.request.url;
-      //   if (url != null) {
-      //     final scheme = url.scheme;
-      //     final path = url.path;
-      //     final host = url.host;
-      //     if (scheme == 'about') {
-      //       log('scheme - $scheme', name: 'NavigationActionPolicy.ALLOW');
-      //       return NavigationActionPolicy.CANCEL;
-      //     }
-
-      //     if (path == 'blank') {
-      //       return NavigationActionPolicy.CANCEL;
-      //     }
-
-      //     if (scheme == 'http' || scheme == 'https') {
-      //       log('scheme - $scheme', name: 'NavigationActionPolicy.ALLOW');
-      //       return NavigationActionPolicy.ALLOW;
-      //     }
-
-      //     _handleCustomScheme(url);
-      //     return NavigationActionPolicy.CANCEL;
-      //   }
-      //   return NavigationActionPolicy.CANCEL;
-      // },
       shouldOverrideUrlLoading: (controller, action) async {
         final url = action.request.url;
         if (url != null) {
@@ -236,17 +211,13 @@ class _AppWebViewState extends State<AppWebView> {
             );
 
             if (isInternal || isSpecial) {
-              // 내부 도메인 → WebView에서 열기
-              print('✅ ${isInternal ? "내부" : "특수"} 도메인: $host - WebView에서 열기');
+              // 내부 도메인은 WebView에서 열기
               return NavigationActionPolicy.ALLOW;
             } else {
-              // 외부 도메인 → 브라우저로 열기
-              print('🌐 외부 도메인: $host - 브라우저로 열기');
+              // 외부 도메인은 브라우저로 열기
               try {
                 await launchUrl(url, mode: LaunchMode.externalApplication);
-                print('✅ launchUrl 성공');
               } catch (e) {
-                print('❌ launchUrl 에러: $e');
               }
               return NavigationActionPolicy.CANCEL;
             }
@@ -493,7 +464,7 @@ webController.addJavaScriptHandler(
               fcmToken = newToken;
               print('🟢 FCM 토큰 재시도 성공: ${fcmToken.substring(0, 20)}...');
             } else {
-              print('🔴 FCM 토큰 여전히 null (나중에 업데이트 필요)');
+              print('🔴 FCM 토큰 여전히 null (업데이트 필요)');
             }
           } catch (e) {
             print('🔴 FCM 토큰 재시도 실패: $e');

@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "501016517195",
+    "firebase_url": "https://dfd-membership.firebaseio.com",
+    "project_id": "dfd-membership",
+    "storage_bucket": "dfd-membership.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501016517195:android:08aa255354498b66",
+        "android_client_info": {
+          "package_name": "com.dfdgroup.membership"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "501016517195-bckvkb9oe3p3sqpl69hspka8fcbgp3n2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjLCpy0ub_aX83IKNEga3LuQBymIwOmz4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "501016517195-bckvkb9oe3p3sqpl69hspka8fcbgp3n2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "501016517195-tb2l8hvsiboj45q7n21802gs6n3u1hld.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dfdgroup.membership.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501016517195:android:1bb57e53f2f95cf59acbce",
+        "android_client_info": {
+          "package_name": "com.newdfd.membership"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "501016517195-bckvkb9oe3p3sqpl69hspka8fcbgp3n2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjLCpy0ub_aX83IKNEga3LuQBymIwOmz4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "501016517195-bckvkb9oe3p3sqpl69hspka8fcbgp3n2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "501016517195-tb2l8hvsiboj45q7n21802gs6n3u1hld.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dfdgroup.membership.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

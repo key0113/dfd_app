@@ -7,32 +7,24 @@ class KakaoAuthService {
 
   Future<Map<String, dynamic>?> signInWithKakao() async {
     try {
-      print('🔵 카카오톡 설치 확인 중...');
       bool isInstalled = await isKakaoTalkInstalled();
-      print('🔵 카카오톡 설치됨: $isInstalled');
 
       OAuthToken token;
 
-      print('🔵 로그인 시작 직전');
 
       if (isInstalled) {
         try {
-          print('🔵 카카오톡으로 로그인 시작');
           token = await UserApi.instance.loginWithKakaoTalk();
         } catch (error) {
-          print('🟡 카카오톡 로그인 실패, 카카오 계정으로 재시도');
           // 카카오톡 로그인 실패 시 웹 로그인으로 fallback
           token = await UserApi.instance.loginWithKakaoAccount();
         }
       } else {
-        print('🔵 카카오 계정으로 로그인 시작');
         token = await UserApi.instance.loginWithKakaoAccount();
       }
 
-      print('🔵 로그인 완료! await 통과함');
       print('🔵 토큰: ${token.accessToken.substring(0, 20)}...');
 
-      print('🔵 사용자 정보 요청 중...');
       User user = await UserApi.instance.me();
       print('🔵 사용자 정보 받음: ${user.id}');
 
@@ -47,8 +39,6 @@ class KakaoAuthService {
       };
 
     } catch (error) {
-      print('🔴 카카오 로그인 실패!!!');
-      print('🔴 에러 타입: ${error.runtimeType}');
       print('🔴 에러 내용: $error');
       return null;
     }
