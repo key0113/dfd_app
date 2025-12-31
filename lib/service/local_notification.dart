@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:newdfd/service/deeplink_service.dart';
@@ -34,8 +34,8 @@ class LocalNotificationService {
 
   setting() async {
     channel = const AndroidNotificationChannel(
-      'dfd_notification_channel',
-      'dfd Notification',
+      'high_importance_channel',
+      'High Importance Notifications',
       importance: Importance.max,
       playSound: true,
       enableLights: true,
@@ -69,21 +69,71 @@ class LocalNotificationService {
     final hashCode = notification.hashCode;
     final title = notification?.title;
     final body = notification?.body;
-    final link = event.data['link'];
-    // final imageUrl = event.data['image_url'];
+    final link = event.data['link_url'];
+
+    final imageUrl = event.data['image_url'];
+    AppLogger.pushMessage("===== 푸시 데이터 확인 =====");
+    AppLogger.pushMessage("title: $title");
+    AppLogger.pushMessage("body: $body");
+    AppLogger.pushMessage("link_url: $link");
+    AppLogger.pushMessage("image_url: $imageUrl");
+    AppLogger.pushMessage("event.data 전체: ${event.data}");
+
+    BigPictureStyleInformation? bigPictureStyle;
+    String? imagePath;
+
+    if (imageUrl != null && imageUrl.isNotEmpty) {
+      try {
+        AppLogger.pushMessage("이미지 다운로드 시작: $imageUrl");
+
+        final response = await http.get(Uri.parse(imageUrl));
+        AppLogger.pushMessage("이미지 다운로드 완료: ${response.statusCode}");
+
+        final Directory tempDir = await getTemporaryDirectory();
+        final String filePath = '${tempDir.path}/notification_image_$hashCode.jpg';
+        final File file = File(filePath);
+        await file.writeAsBytes(response.bodyBytes);
+
+        imagePath = filePath;
+
+        AppLogger.pushMessage("이미지 저장 완료: $filePath");
+        AppLogger.pushMessage("파일 크기: ${file.lengthSync()} bytes");
+
+        bigPictureStyle = BigPictureStyleInformation(
+          FilePathAndroidBitmap(filePath),
+          largeIcon: FilePathAndroidBitmap(filePath),
+          contentTitle: title,
+          summaryText: body,
+          hideExpandedLargeIcon: false,
+        );
+
+        AppLogger.pushMessage("BigPictureStyle 생성 완료");
+      } catch (e) {
+        AppLogger.pushMessage("이미지 처리 실패: $e");
+      }
+    } else {
+      AppLogger.pushMessage("이미지 URL 없음");
+    }
+
+    final androidDetails = AndroidNotificationDetails(
+      channel.id,
+      channel.name,
+      channelDescription: 'This channel is used for important notifications',
+      importance: Importance.max,
+      priority: Priority.high,
+      icon: 'ic_launcher',
+      styleInformation: bigPictureStyle,
+      largeIcon: imagePath != null ? FilePathAndroidBitmap(imagePath) : null,
+      showWhen: true,
+    );
 
     flutterLocalNotificationsPlugin.show(
         hashCode,
         title,
         body,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            channel.id,
-            channel.name,
-            icon: 'ic_launcher',
-            // styleInformation: bigPictureStyle,
-          ),
-        ),
+        NotificationDetails(android: androidDetails),
         payload: link);
+
+    AppLogger.pushMessage("알림 표시 완료");
   }
 }
